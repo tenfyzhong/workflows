@@ -100,7 +100,10 @@ jobs:
       - name: Create release
         run: |
           GIT_TAG_MESSAGE=$(git tag -l --format='%(contents)' ${{env.VERSION}} 2>/dev/null)
-          echo $GIT_TAG_MESSAGE
-          gh release create "${{env.VERSION}}" --verify-tag -n "$GIT_TAG_MESSAGE" ${{ inputs.output }}/*
+          GIT_TAG_TITLE=$(echo $GIT_TAG_MESSAGE | head -n 1)
+          GIT_TAG_NOTE=$(echo $GIT_TAG_MESSAGE | tail -n +2)
+          echo "GIT_TAG_TITLE=$GIT_TAG_TITLE"
+          echo "GIT_TAG_NOTE=$GIT_TAG_NOTE"
+          gh release create "${{env.VERSION}}" --verify-tag -t "$GIT_TAG_TITLE" -n "$GIT_TAG_NOTE" ${{ inputs.output }}/*
         env: 
           GH_TOKEN: ${{ github.token }}
