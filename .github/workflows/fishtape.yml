@@ -1,0 +1,31 @@
+name: fishtape
+
+on: 
+  workflow_call:
+    inputs:
+      dependences:
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Fish
+        run: |
+          sudo apt-add-repository -yn ppa:fish-shell/release-3
+          sudo apt-get update
+          sudo apt-get install -y fish
+          sudo apt-get install -y ${{ inputs.dependences }}
+
+      - name: Install Tools
+        shell: fish
+        run: |
+          curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+          fisher install jorgebucaran/fishtape
+          fisher install .
+          fishtape tests/*
+
