@@ -7,6 +7,9 @@ on:
         required: false
         type: string
         default: ""
+      test-glob:
+        required: true
+        type: string
 
 jobs:
   test:
@@ -27,5 +30,5 @@ jobs:
           curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
           fisher install jorgebucaran/fishtape
           fisher install .
-          fishtape tests/*
+          fishtape ${{ inputs.test-glob }}
 
