@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Fish
+      - name: Install Fish and dependences
         run: |
           sudo apt-add-repository -yn ppa:fish-shell/release-3
           sudo apt update
