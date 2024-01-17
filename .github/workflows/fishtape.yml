@@ -3,7 +3,7 @@ name: fishtape
 on: 
   workflow_call:
     inputs:
-      denpendencies:
+      dependencies:
         required: false
         type: string
         default: ""
@@ -18,12 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Fish and denpendencies
+      - name: Install Fish and dependencies
         run: |
           sudo apt-add-repository -yn ppa:fish-shell/release-3
           sudo apt update
           sudo apt install -y fish
-          sudo apt install -y ${{ inputs.denpendencies }}
+          sudo apt install -y ${{ inputs.dependencies }}
 
       - name: Run fishtap
         run: |
