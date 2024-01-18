@@ -1,15 +1,14 @@
-<!--ts-->
-* [Workflows](#workflows)
-* [Available workflows](#available-workflows)
-   * [sync-fork](#sync-fork)
-      * [Usage](#usage)
-   * [release-go](#release-go)
-      * [Usage](#usage-1)
-      * [inputs](#inputs)
-   * [fishtape](#fishtape)
-      * [Usage](#usage-2)
-      * [inputs](#inputs-1)
-<!--te-->
+# Table of Contents
+- [Workflows](#workflows)
+- [Available workflows](#available-workflows)
+  - [sync-fork](#sync-fork)
+    - [Usage](#usage)
+  - [release-go](#release-go)
+    - [Usage](#usage)
+    - [inputs](#inputs)
+  - [fishtape](#fishtape)
+    - [Usage](#usage)
+    - [inputs](#inputs)
 
 # Workflows
 github reusable workflow
