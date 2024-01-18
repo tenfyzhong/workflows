@@ -1,8 +1,21 @@
+<!--ts-->
+* [Workflows](#workflows)
+* [Available workflows](#available-workflows)
+   * [sync-fork](#sync-fork)
+      * [Usage](#usage)
+   * [release-go](#release-go)
+      * [Usage](#usage-1)
+      * [inputs](#inputs)
+   * [fishtape](#fishtape)
+      * [Usage](#usage-2)
+      * [inputs](#inputs-1)
+<!--te-->
+
 # Workflows
 github reusable workflow
 
 # Available workflows
-## [sync-fork.yml](https://github.com/tenfyzhong/workflows/tree/main/.github/workflows/sync-fork.yml)
+## sync-fork
 This workflow sync fork from the upstream. You can setup a schedule to sync automatically.
 ### Usage
 ```yaml
@@ -16,7 +29,7 @@ jobs:
     uses: tenfyzhong/workflows/.github/workflows/sync-fork.yml@main
 ```
 
-## [sync-fork.yml](https://github.com/tenfyzhong/workflows/tree/main/.github/workflows/release-go.yml)
+## release-go
 This workflow create release for go tools when push a tag.
 ### Usage
 Example: 
@@ -50,7 +63,7 @@ jobs:
 - `command`: command name to build.
 - `build-option`: option passed to `go build`.
 
-## [fishtape.yml](https://github.com/tenfyzhong/workflows/blob/main/.github/workflows/fishtape.yml)
+## fishtape
 This workflow run [fishtape](https://github.com/jorgebucaran/fishtape) test.
 ### Usage
 Example:
