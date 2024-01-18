@@ -41,7 +41,7 @@ jobs:
       command: "st2"
       build-option: "-ldflags \"-X 'github.com/tenfyzhong/st2/cmd/st2/config.Version=${{ needs.tag.outputs.version }}'\""
 
-``````
+```
 
 ### inputs
 - `go-version`: The go version which to build go source code.
@@ -49,3 +49,25 @@ jobs:
 - `output`: The directory to build bin files, default `output`.
 - `command`: command name to build.
 - `build-option`: option passed to `go build`.
+
+## [fishtape.yml](https://github.com/tenfyzhong/workflows/blob/main/.github/workflows/fishtape.yml)
+This workflow run [fishtape](https://github.com/jorgebucaran/fishtape) test.
+### Usage
+Example:
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: test
+    uses: tenfyzhong/workflows/.github/workflows/fishtape.yml@main
+    with:
+      test-glob: "tests/*.fish"
+      dependencies: "curl pigz pbzip2 xz-utils lzma zstd lzip lz4 lrzip 7zip bzip2 lrzip cpio rar unrar zpaq"
+```
+
+### inputs
+- `test-glob`: The fish test file glob.
+- `dependencies`: Package dependencies which use `apt` to install. 
