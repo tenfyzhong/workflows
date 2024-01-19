@@ -21,13 +21,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: go get .
-
     - name: Set up Go ${{ inputs.go-version }}
       uses: actions/setup-go@v4
       with:
         go-version: ${{ inputs.go-version }}
+
+    - name: Install dependencies
+      run: go get .
 
     - name: Build path ${{ inputs.path }}
       run: go build -v ${{ inputs.path }}
