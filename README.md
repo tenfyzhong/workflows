@@ -3,6 +3,9 @@
 - [Available workflows](#available-workflows)
   - [sync-fork](#sync-fork)
     - [Usage](#usage)
+  - [go-build-test](#go-build-test)
+    - [Usage](#usage)
+    - [inputs](#inputs)
   - [release-go](#release-go)
     - [Usage](#usage)
     - [inputs](#inputs)
@@ -27,6 +30,30 @@ jobs:
   sync:
     uses: tenfyzhong/workflows/.github/workflows/sync-fork.yml@main
 ```
+
+## go-build-test
+This workflow build and test go codes.
+### Usage
+```yaml
+name: go
+on:
+  push:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test:
+    strategy:
+      matrix:
+        go-version: ['1.18', '1.19', '1.20', '1.21.x']
+    uses: tenfyzhong/workflows/.github/workflows/go-build-test.yml@go-build-test
+    with: 
+      go-version: ${{matrix.go-version}}
+```
+
+###  inputs
+- `go-version`: The go version to run.
+- `path`: The path to build and test. 
 
 ## release-go
 This workflow create release for go tools when push a tag.
