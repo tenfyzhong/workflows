@@ -38,18 +38,17 @@ This workflow build and test go codes.
 name: go
 on:
   push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build-test:
-    matrix:
-      go-version: ['1.18', '1.19', '1.20', '1.21.x']
-    uses: tenfyzhong/workflows/.github/workflow/go-build-test.yml@main
+    strategy:
+      matrix:
+        go-version: ['1.18', '1.19', '1.20', '1.21.x']
+    uses: tenfyzhong/workflows/.github/workflows/go-build-test.yml@go-build-test
     with: 
       go-version: ${{matrix.go-version}}
-
 ```
 
 ###  inputs
