@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: "./..."
+      enable-codecov:
+        required: false
+        type: boolean
+        default: true
 
 jobs:
 
@@ -33,11 +37,12 @@ jobs:
       run: go build -v ${{ inputs.path }}
 
     - name: Test path ${{ inputs.path }}
-      run: go test -v -cover -json ${{ inputs.path }} | tee TestResults-${{ inputs.go-version }}.json
+      run: |
+        go test -race -coverprofile=coverage.out -covermode=atomic -v ${{ inputs.path }}
 
-    - name: Upload Go test results
-      uses: actions/upload-artifact@v3
+    - name: Upload coverage reports to Codecov
+      if: ${{ required.enable-codecov }}
+      uses: codecov/codecov-action@v3
       with:
-        name: Go-results-${{ inputs.go-version }}
-        path: TestResults-${{ inputs.go-version }}.json
+        fail_ci_if_error: true
 
