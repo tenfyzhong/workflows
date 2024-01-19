@@ -5,13 +5,13 @@
     - [Usage](#usage)
   - [go-build-test](#go-build-test)
     - [Usage](#usage)
-    - [inputs](#inputs)
+    - [Inputs](#inputs)
   - [release-go](#release-go)
     - [Usage](#usage)
-    - [inputs](#inputs)
+    - [Inputs](#inputs)
   - [fishtape](#fishtape)
     - [Usage](#usage)
-    - [inputs](#inputs)
+    - [Inputs](#inputs)
 
 # Workflows
 github reusable workflow
@@ -51,7 +51,7 @@ jobs:
       go-version: ${{matrix.go-version}}
 ```
 
-###  inputs
+### Inputs
 - `go-version`: The go version to run.
 - `path`: The path to build and test. 
 
@@ -82,7 +82,7 @@ jobs:
 
 ```
 
-### inputs
+### Inputs
 - `go-version`: The go version which to build go source code.
 - `bin-path`: The bin-path relative to the project root.
 - `output`: The directory to build bin files, default `output`.
@@ -107,6 +107,6 @@ jobs:
       dependencies: "curl pigz pbzip2 xz-utils lzma zstd lzip lz4 lrzip 7zip bzip2 lrzip cpio rar unrar zpaq"
 ```
 
-### inputs
+### Inputs
 - `test-glob`: The fish test file glob.
 - `dependencies`: Package dependencies which use `apt` to install. 
