@@ -41,7 +41,7 @@ jobs:
         go test -race -coverprofile=coverage.out -covermode=atomic -v ${{ inputs.path }}
 
     - name: Upload coverage reports to Codecov
-      if: ${{ required.enable-codecov }}
+      if: ${{ inputs.enable-codecov }}
       uses: codecov/codecov-action@v3
       with:
         fail_ci_if_error: true
