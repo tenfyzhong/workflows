@@ -38,7 +38,7 @@ This workflow build and test go codes.
 name: go
 on:
   push:
-  pull_request:
+  pull_request_target:
     branches: [ "main" ]
 
 jobs:
