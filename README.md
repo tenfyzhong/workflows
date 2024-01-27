@@ -12,6 +12,9 @@
   - [fishtape](#fishtape)
     - [Usage](#usage)
     - [Inputs](#inputs)
+  - [bats](#bats)
+    - [Usage](#usage)
+    - [Inputs](#inputs)
 
 # Workflows
 github reusable workflow
@@ -109,4 +112,25 @@ jobs:
 
 ### Inputs
 - `test-glob`: The fish test file glob.
+- `dependencies`: Package dependencies which use `apt` to install. 
+
+## bats
+This workflow run bash script test.
+### Usage
+Example:
+```yaml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: test
+    uses: tenfyzhong/workflows/.github/workflows/bats.yml@main
+    with:
+      test-glob: "tests/*.bats"
+```
+
+### Inputs
+- `test-glob`: The bats test file glob.
 - `dependencies`: Package dependencies which use `apt` to install. 
