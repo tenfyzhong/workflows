@@ -1,9 +1,6 @@
 name: sync-fork
 
-permissions:
-  contents: write
-  pull-requests: write
-  repository-projects: write
+permissions: write-all
 
 on:
   workflow_call:
