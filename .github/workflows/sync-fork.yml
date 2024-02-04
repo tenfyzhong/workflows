@@ -8,7 +8,9 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - run: gh repo sync $REPOSITORY -b $BRANCH_NAME
+      - run: |
+          gh auth refresh -s workflow
+          gh repo sync $REPOSITORY -b $BRANCH_NAME
         env:
           REPOSITORY: ${{ github.repository }}
           BRANCH_NAME: ${{ github.ref_name }}
