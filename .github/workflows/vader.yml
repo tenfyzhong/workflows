@@ -27,7 +27,7 @@ jobs:
       - uses: rhysd/action-setup-vim@v1
         with:
           neovim: ${{ matrix.editor == 'nvim' }}
-      - uses: tenfyzhong/actions/vader@vader
+      - uses: tenfyzhong/actions/vader@main
         with:
           editor: ${{ matrix.editor }}
           plugins: ${{ inputs.plugins }}
