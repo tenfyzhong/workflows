@@ -3,7 +3,7 @@ name: vader
 on: 
   workflow_call:
     inputs:
-      dependencies:
+      plugins:
         required: false
         type: string
         default: ""
@@ -24,8 +24,8 @@ jobs:
       - uses: rhysd/action-setup-vim@v1
         with:
           neovim: ${{ matrix.editor == 'neovim' }}
-      - uses: PsychoLlama/vader-action@v1
+      - uses: tenfyzhong/actions/vader@vader
         with:
-          neovim: ${{ matrix.editor == 'neovim' }}
-          plugins: ${{ inputs.dependencies }}
+          editor: ${{ matrix.editor }}
+          plugins: ${{ inputs.plugins }}
           test-pattern: ${{ inputs.test-pattern }}
