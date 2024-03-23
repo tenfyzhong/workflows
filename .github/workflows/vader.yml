@@ -21,12 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        editor: ['vim', 'neovim']
+        editor: ['vim', 'nvim']
     steps:
       - uses: actions/checkout@v4
       - uses: rhysd/action-setup-vim@v1
         with:
-          neovim: ${{ matrix.editor == 'neovim' }}
+          neovim: ${{ matrix.editor == 'nvim' }}
       - uses: tenfyzhong/actions/vader@vader
         with:
           editor: ${{ matrix.editor }}
