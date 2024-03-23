@@ -134,3 +134,24 @@ jobs:
 ### Inputs
 - `test-glob`: The bats test file glob.
 - `dependencies`: Package dependencies which use `apt` to install. 
+
+## vader
+This workflow run vim plugin test with [vader](https://github.com/junegunn/vader.vim)
+### Usage
+Example:
+```yaml
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: test
+    uses: tenfyzhong/workflows/.github/workflows/vader.yml@main
+    with:
+      test-pattern: 'vader/*.vader'
+```
+
+### Inputs
+- `plugins`: A colon-separated list of plugins to install.
+- `test-pattern`: A glob which points to you vader test files.

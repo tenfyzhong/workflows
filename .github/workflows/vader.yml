@@ -1,0 +1,34 @@
+name: vader
+
+permissions:
+  actions: read
+
+on: 
+  workflow_call:
+    inputs:
+      plugins:
+        required: false
+        type: string
+        default: ""
+      test-pattern:
+        required: false
+        type: string
+        default: "**/*.vader"
+
+jobs:
+  test:
+    name: Test (${{ matrix.editor }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        editor: ['vim', 'nvim']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: ${{ matrix.editor == 'nvim' }}
+      - uses: tenfyzhong/actions/vader@main
+        with:
+          editor: ${{ matrix.editor }}
+          plugins: ${{ inputs.plugins }}
+          test-pattern: ${{ inputs.test-pattern }}
