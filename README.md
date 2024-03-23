@@ -15,6 +15,9 @@
   - [bats](#bats)
     - [Usage](#usage)
     - [Inputs](#inputs)
+  - [vader](#vader)
+    - [Usage](#usage)
+    - [Inputs](#inputs)
 
 # Workflows
 github reusable workflow
