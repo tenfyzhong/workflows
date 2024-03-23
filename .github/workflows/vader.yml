@@ -1,0 +1,31 @@
+name: vader
+
+on: 
+  workflow_call:
+    inputs:
+      dependencies:
+        required: false
+        type: string
+        default: ""
+      test-pattern:
+        required: false
+        type: string
+        default: "**/*.vader"
+
+jobs:
+  test:
+    name: Test (${{ matrix.editor }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        editor: ['vim', 'neovim']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: ${{ matrix.editor == 'neovim' }}
+      - uses: PsychoLlama/vader-action@v1
+        with:
+          neovim: ${{ matrix.editor == 'neovim' }}
+          plugins: ${{ inputs.dependencies }}
+          test-pattern: ${{ inputs.test-pattern }}
