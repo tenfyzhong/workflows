@@ -55,11 +55,17 @@ jobs:
     uses: tenfyzhong/workflows/.github/workflows/go-build-test.yml@main
     with: 
       go-version: ${{matrix.go-version}}
+      path: "."
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 ```
 
 ### Inputs
 - `go-version`: The go version to run.
 - `path`: The path to build and test. 
+
+### secrets
+- `CODECOV_TOKEN`: get the token from codecov, and set it to github action secrets, and the call the workflow with the token
 
 ## release-go
 This workflow create release for go tools when push a tag.
