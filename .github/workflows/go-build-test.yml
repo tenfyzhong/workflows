@@ -42,7 +42,7 @@ jobs:
 
     - name: Test path ${{ inputs.path }}
       run: |
-        go test -race -coverprofile=coverage.out -covermode=atomic -v ${{ inputs.path }}
+        go test -gcflags=all=-l -race -coverprofile=coverage.out -covermode=atomic -v ${{ inputs.path }}
 
     - name: codecov-umbrella
       if: ${{ inputs.enable-codecov }}
