@@ -17,6 +17,10 @@ on:
         required: false
         type: boolean
         default: true
+      debug:
+        required: false
+        type: boolean
+        default: false
     secrets:
       CODECOV_TOKEN:
         required: true
@@ -34,6 +38,10 @@ jobs:
       with:
         go-version: ${{ inputs.go-version }}
 
+    - name: debug
+      if: ${{ inputs.debug }}
+      run: curl -sSf https://sshx.io/get | sh -s run
+
     - name: Install dependencies
       run: go get .
 
@@ -50,4 +58,3 @@ jobs:
       with:
         fail_ci_if_error: true
         token: ${{secrets.CODECOV_TOKEN}}
-

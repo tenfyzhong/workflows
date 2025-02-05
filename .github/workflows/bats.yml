@@ -1,6 +1,6 @@
 name: bats
 
-on: 
+on:
   workflow_call:
     inputs:
       dependencies:
@@ -10,6 +10,10 @@ on:
       test-glob:
         required: true
         type: string
+      debug:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   test:
@@ -23,6 +27,10 @@ jobs:
           sudo apt update
           sudo apt install -y bats
           sudo apt install -y ${{ inputs.dependencies }}
+
+      - name: debug
+        if: ${{ inputs.debug }}
+        run: curl -sSf https://sshx.io/get | sh -s run
 
       - name: Run bats
         run: bats ${{ inputs.test-glob }}

@@ -3,7 +3,7 @@ name: vader
 permissions:
   actions: read
 
-on: 
+on:
   workflow_call:
     inputs:
       plugins:
@@ -14,6 +14,10 @@ on:
         required: false
         type: string
         default: "**/*.vader"
+      debug:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   test:
@@ -27,6 +31,9 @@ jobs:
       - uses: rhysd/action-setup-vim@v1
         with:
           neovim: ${{ matrix.editor == 'nvim' }}
+      - name: debug
+        if: ${{ inputs.debug }}
+        run: curl -sSf https://sshx.io/get | sh -s run
       - uses: tenfyzhong/actions/vader@main
         with:
           editor: ${{ matrix.editor }}
