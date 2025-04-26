@@ -98,6 +98,8 @@ jobs:
           go-version: ${{ inputs.go-version }}
       - name: Download bin files
         uses: actions/download-artifact@v4
+        with:
+          path: ${{inputs.output}}
       - name: Create release
         run: |
           GIT_TAG_TITLE=$(git tag -l --format='%(contents:subject)' ${{env.VERSION}} 2>/dev/null)
