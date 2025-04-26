@@ -76,7 +76,7 @@ jobs:
         env:
           TARGET: ${{steps.target-name.outputs.target}}
         with:
-          name: ${{env.TARGET}}
+          # name: ${{env.TARGET}}
           path: ${{inputs.output}}/
 
 
@@ -99,7 +99,7 @@ jobs:
       - name: Download bin files
         uses: actions/download-artifact@v4
         with:
-          path: ${{inputs.output}}
+          path: ${{inputs.output}}/
       - name: Create release
         run: |
           GIT_TAG_TITLE=$(git tag -l --format='%(contents:subject)' ${{env.VERSION}} 2>/dev/null)
