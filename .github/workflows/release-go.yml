@@ -72,7 +72,7 @@ jobs:
         env:
           TARGET: ${{steps.target-name.outputs.target}}
       - name: Upload Go build result
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           TARGET: ${{steps.target-name.outputs.target}}
         with:
@@ -97,7 +97,7 @@ jobs:
         with:
           go-version: ${{ inputs.go-version }}
       - name: Download bin files
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Create release
         run: |
           GIT_TAG_TITLE=$(git tag -l --format='%(contents:subject)' ${{env.VERSION}} 2>/dev/null)
@@ -105,5 +105,5 @@ jobs:
           echo "GIT_TAG_TITLE=$GIT_TAG_TITLE"
           echo "GIT_TAG_NOTE=$GIT_TAG_NOTE"
           gh release create "${{env.VERSION}}" --verify-tag -t "$GIT_TAG_TITLE" -n "$GIT_TAG_NOTE" ${{ inputs.output }}/*
-        env: 
+        env:
           GH_TOKEN: ${{ github.token }}
