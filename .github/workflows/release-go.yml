@@ -25,11 +25,11 @@ on:
       goos:
         required: false
         type: string
-        default: "linux,windows,darwin"
+        default: '["linux", "windows", "darwin"]'
       goarch:
         required: false
         type: string
-        default: "386,amd64,arm64"
+        default: '["386","amd64","arm64"]'
 
 permissions:
   contents: write
@@ -57,8 +57,8 @@ jobs:
     needs: version
     strategy:
       matrix:
-        goos: ${{ fromJSON(format('[{0}]', join(split(inputs.goos, ','), ','))) }}
-        goarch: ${{ fromJSON(format('[{0}]', join(split(inputs.goarch, ','), ','))) }}
+        goos: ${{ fromJSON(inputs.goos) }}
+        goarch: ${{ fromJSON(inputs.goarch) }}
         exclude:
           - goarch: "386"
             goos: darwin
