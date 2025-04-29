@@ -53,7 +53,7 @@ jobs:
       matrix:
         go-version: ['1.18', '1.19', '1.20', '1.21.x']
     uses: tenfyzhong/workflows/.github/workflows/go-build-test.yml@main
-    with: 
+    with:
       go-version: ${{matrix.go-version}}
       path: "."
     secrets:
@@ -62,7 +62,7 @@ jobs:
 
 ### Inputs
 - `go-version`: The go version to run.
-- `path`: The path to build and test. 
+- `path`: The path to build and test.
 
 ### secrets
 - `CODECOV_TOKEN`: get the token from codecov, and set it to github action secrets, and the call the workflow with the token
@@ -70,7 +70,7 @@ jobs:
 ## release-go
 This workflow create release for go tools when push a tag.
 ### Usage
-Example: 
+Example:
 ```yaml
 jobs:
   tag:
@@ -91,6 +91,8 @@ jobs:
       bin-path: "./cmd/st2"
       command: "st2"
       build-option: "-ldflags \"-X 'github.com/tenfyzhong/st2/cmd/st2/config.Version=${{ needs.tag.outputs.version }}'\""
+      goos: '["darwin"]'
+      goarch: '["amd64", "arm64"]'
 
 ```
 
@@ -98,8 +100,10 @@ jobs:
 - `go-version`: The go version which to build go source code.
 - `bin-path`: The bin-path relative to the project root.
 - `output`: The directory to build bin files, default `output`.
-- `command`: command name to build.
-- `build-option`: option passed to `go build`.
+- `command`: Command name to build.
+- `build-option`: Option passed to `go build`.
+- `goos`: The target os to build.
+- `goarch`: The arget arch to build.
 
 ## fishtape
 This workflow run [fishtape](https://github.com/jorgebucaran/fishtape) test.
@@ -121,7 +125,7 @@ jobs:
 
 ### Inputs
 - `test-glob`: The fish test file glob.
-- `dependencies`: Package dependencies which use `apt` to install. 
+- `dependencies`: Package dependencies which use `apt` to install.
 
 ## bats
 This workflow run bash script test.
@@ -142,7 +146,7 @@ jobs:
 
 ### Inputs
 - `test-glob`: The bats test file glob.
-- `dependencies`: Package dependencies which use `apt` to install. 
+- `dependencies`: Package dependencies which use `apt` to install.
 
 ## vader
 This workflow run vim plugin test with [vader](https://github.com/junegunn/vader.vim)
