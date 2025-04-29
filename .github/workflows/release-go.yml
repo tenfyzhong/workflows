@@ -100,8 +100,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ${{inputs.output}}/
+          merge-multiple: true
       - name: Verify artifacts
-        run: ls -la ${{inputs.output}}/
+        run: tree ${{inputs.output}}/
       - name: Create release
         run: |
           GIT_TAG_TITLE=$(git tag -l --format='%(contents:subject)' ${{env.VERSION}} 2>/dev/null)
