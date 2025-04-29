@@ -77,7 +77,7 @@ jobs:
           TARGET: ${{steps.target-name.outputs.target}}
         with:
           name: ${{env.TARGET}}
-          path: ${{inputs.output}}/${{env.TARGET}}
+          path: ${{inputs.output}}/
 
 
   release:
