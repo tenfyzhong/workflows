@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 1
 
       - name: Build plugin
-        run: npm run build
+        run: npm i && npm run build
 
       - name: Create release
         run: |
