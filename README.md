@@ -168,3 +168,25 @@ jobs:
 ### Inputs
 - `plugins`: A colon-separated list of plugins to install.
 - `test-pattern`: A glob which points to you vader test files.
+
+## release-obsidian-plugin
+This workflow release obsidian plugin version by git tag
+### Usage
+Example:
+```yaml
+name: release-obsidian-plugin
+
+permissions:
+  contents: write
+  packages: write
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  release:
+    name: release
+    uses: tenfyzhong/workflows/.github/workflows/release-obisidian-plugin.yml@main
+```
