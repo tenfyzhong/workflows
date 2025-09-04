@@ -3,10 +3,6 @@ name: release-go
 on:
   workflow_call:
     inputs:
-      go-version:
-        required: false
-        type: string
-        default: "1.20"
       bin-path:
         required: false
         type: string
@@ -69,6 +65,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+      - name: Get Go version
+        id: go-version
+        run: echo "version=$(grep -oP 'go \K[0-9.]+' go.mod)" >> $GITHUB_OUTPUT
+      - name: Set up Go ${{ steps.go-version.outputs.version }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ steps.go-version.outputs.version }}
       - name: Build target name
         id: target-name
         run: echo "target=${{inputs.command}}-${{matrix.goos}}-${{matrix.goarch}}${SUFFIX}" >> $GITHUB_OUTPUT
@@ -99,10 +102,13 @@ jobs:
           fetch-depth: 1
       - name: Fetch tags
         run: git fetch --tags --force
-      - name: Setup Go
+      - name: Get Go version
+        id: go-version
+        run: echo "version=$(grep -oP 'go \K[0-9.]+' go.mod)" >> $GITHUB_OUTPUT
+      - name: Set up Go ${{ steps.go-version.outputs.version }}
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ inputs.go-version }}
+          go-version: ${{ steps.go-version.outputs.version }}
       - name: Download bin files
         uses: actions/download-artifact@v4
         with:
