@@ -6,9 +6,6 @@ name: Go
 on:
   workflow_call:
     inputs:
-      go-version:
-        required: true
-        type: string
       path:
         required: false
         type: string
@@ -33,14 +30,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Go ${{ inputs.go-version }}
-      uses: actions/setup-go@v4
-      with:
-        go-version: ${{ inputs.go-version }}
-
     - name: debug
       if: ${{ inputs.debug }}
       run: curl -sSf https://sshx.io/get | sh -s run
+
+    - name: Get Go version
+      id: go-version
+      run: echo "version=$(grep -oP 'go \K[0-9.]+' go.mod)" >> $GITHUB_OUTPUT
+
+    - name: Set up Go ${{ steps.go-version.outputs.version }}
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ steps.go-version.outputs.version }}
 
     - name: Install dependencies
       run: go get .
