@@ -2,14 +2,13 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
 name: Go
-
 on:
   workflow_call:
     inputs:
       path:
         required: false
         type: string
-        default: "./..."
+        default: ./...
       enable-codecov:
         required: false
         type: boolean
@@ -21,41 +20,28 @@ on:
     secrets:
       CODECOV_TOKEN:
         required: true
-
-
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-
-    - name: debug
-      if: ${{ inputs.debug }}
-      run: curl -sSf https://sshx.io/get | sh -s run
-
-    - name: Get Go version
-      id: go-version
-      run: echo "version=$(grep -oP 'go \K[0-9.]+' go.mod)" >> $GITHUB_OUTPUT
-
-    - name: Set up Go ${{ steps.go-version.outputs.version }}
-      uses: actions/setup-go@v4
-      with:
-        go-version: ${{ steps.go-version.outputs.version }}
-
-    - name: Install dependencies
-      run: go get .
-
-    - name: Build path ${{ inputs.path }}
-      run: go build -v ${{ inputs.path }}
-
-    - name: Test path ${{ inputs.path }}
-      run: |
-        go test -gcflags=all=-l -race -coverprofile=coverage.out -covermode=atomic -v ${{ inputs.path }}
-
-    - name: codecov-umbrella
-      if: ${{ inputs.enable-codecov }}
-      uses: codecov/codecov-action@v4
-      with:
-        fail_ci_if_error: true
-        token: ${{secrets.CODECOV_TOKEN}}
+      - uses: actions/checkout@v4
+      - name: debug
+        if: ${{ inputs.debug }}
+        run: curl -sSf https://sshx.io/get | sh -s run
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Install dependencies
+        run: go get .
+      - name: Build path ${{ inputs.path }}
+        run: go build -v ${{ inputs.path }}
+      - name: Test path ${{ inputs.path }}
+        run: |
+          go test -gcflags=all=-l -race -coverprofile=coverage.out -covermode=atomic -v ${{ inputs.path }}
+      - name: codecov-umbrella
+        if: ${{ inputs.enable-codecov }}
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{secrets.CODECOV_TOKEN}}
