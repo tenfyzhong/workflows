@@ -1,16 +1,15 @@
 name: release-go
-
 on:
   workflow_call:
     inputs:
       bin-path:
         required: false
         type: string
-        default: "."
+        default: .
       output:
         required: false
         type: string
-        default: "output"
+        default: output
       command:
         required: true
         type: string
@@ -26,11 +25,9 @@ on:
         required: false
         type: string
         default: '["386","amd64","arm64"]'
-
 permissions:
   contents: write
   packages: write
-
 jobs:
   version:
     name: Get the version
@@ -43,7 +40,6 @@ jobs:
         run: echo "version=$(echo $GITHUB_REF | cut -d / -f 3)" >> $GITHUB_OUTPUT
       - name: Echo tag
         run: echo ${{ steps.tag.outputs.version }}
-
   build:
     env:
       SUFFIX: ${{ matrix.goos == 'windows' && '.exe' || '' }}
@@ -65,13 +61,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Get Go version
-        id: go-version
-        run: echo "version=$(grep -oP 'go \K[0-9.]+' go.mod)" >> $GITHUB_OUTPUT
-      - name: Set up Go ${{ steps.go-version.outputs.version }}
-        uses: actions/setup-go@v4
+      - name: Set up Go
+        uses: actions/setup-go@v6
         with:
-          go-version: ${{ steps.go-version.outputs.version }}
+          go-version-file: go.mod
       - name: Build target name
         id: target-name
         run: echo "target=${{inputs.command}}-${{matrix.goos}}-${{matrix.goarch}}${SUFFIX}" >> $GITHUB_OUTPUT
@@ -88,10 +81,10 @@ jobs:
         with:
           name: ${{env.TARGET}}
           path: ${{inputs.output}}/
-
-
   release:
-    needs: [version, build]
+    needs:
+      - version
+      - build
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.version.outputs.version }}
@@ -105,10 +98,10 @@ jobs:
       - name: Get Go version
         id: go-version
         run: echo "version=$(grep -oP 'go \K[0-9.]+' go.mod)" >> $GITHUB_OUTPUT
-      - name: Set up Go ${{ steps.go-version.outputs.version }}
-        uses: actions/setup-go@v4
+      - name: Set up Go
+        uses: actions/setup-go@v6
         with:
-          go-version: ${{ steps.go-version.outputs.version }}
+          go-version-file: go.mod
       - name: Download bin files
         uses: actions/download-artifact@v4
         with:
