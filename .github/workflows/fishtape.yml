@@ -22,9 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Fish and dependencies
+      - name: Install Fish 4 and dependencies
         run: |
-          sudo apt-add-repository -yn ppa:fish-shell/release-3
+          sudo apt-add-repository -yn ppa:fish-shell/release-4
           sudo apt update
           sudo apt install -y fish
           sudo apt install -y ${{ inputs.dependencies }}
