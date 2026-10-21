@@ -63,6 +63,8 @@ jobs:
 ### Inputs
 - `go-version`: The compiler version to run, default `1.26.10`. Supported overrides must resolve to Go 1.26.10+ or 1.27.3+; prereleases and unsupported release branches are rejected. The module `go` directive remains its language compatibility minimum.
 - `path`: The path to build and test.
+- `enable-codecov`: Upload coverage to Codecov, default `true`. Disabling this does not skip the coverage tests.
+- `upload-coverage-artifact`: Preserve `coverage.out` in GitHub Actions for 14 days, default `false`. Enable this when external Codecov uploads are intentionally disabled.
 
 ### secrets
 - `CODECOV_TOKEN`: get the token from codecov, and set it to github action secrets, and the call the workflow with the token

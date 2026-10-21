@@ -14,6 +14,11 @@ on:
         required: false
         type: string
         default: ./...
+      upload-coverage-artifact:
+        description: Preserve the coverage report as a GitHub Actions artifact
+        required: false
+        type: boolean
+        default: false
       enable-codecov:
         required: false
         type: boolean
@@ -61,6 +66,14 @@ jobs:
       - name: Test path ${{ inputs.path }}
         run: |
           go test -gcflags=all=-l -race -coverprofile=coverage.out -covermode=atomic -v ${{ inputs.path }}
+      - name: Save coverage report
+        if: ${{ inputs.upload-coverage-artifact }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ inputs.go-version }}
+          path: coverage.out
+          if-no-files-found: error
+          retention-days: 14
       - name: codecov-umbrella
         if: ${{ inputs.enable-codecov }}
         uses: codecov/codecov-action@v4
