@@ -44,14 +44,14 @@ This workflow build and test go codes.
 name: go
 on:
   push:
-  pull_request_target:
+  pull_request:
     branches: [ "main" ]
 
 jobs:
   build-test:
     strategy:
       matrix:
-        go-version: ['1.18', '1.19', '1.20', '1.21.x']
+        go-version: ['1.26.10', '1.27.3']
     uses: tenfyzhong/workflows/.github/workflows/go-build-test.yml@main
     with:
       go-version: ${{matrix.go-version}}
@@ -61,8 +61,10 @@ jobs:
 ```
 
 ### Inputs
-- `go-version`: The go version to run.
+- `go-version`: The compiler version to run, default `1.26.10`. Supported overrides must resolve to Go 1.26.10+ or 1.27.3+; prereleases and unsupported release branches are rejected. The module `go` directive remains its language compatibility minimum.
 - `path`: The path to build and test.
+- `enable-codecov`: Upload coverage to Codecov, default `true`. Disabling this does not skip the coverage tests.
+- `upload-coverage-artifact`: Preserve `coverage.out` in GitHub Actions for 14 days, default `false`. Enable this when external Codecov uploads are intentionally disabled.
 
 ### secrets
 - `CODECOV_TOKEN`: get the token from codecov, and set it to github action secrets, and the call the workflow with the token
@@ -97,7 +99,7 @@ jobs:
 ```
 
 ### Inputs
-- `go-version`: The go version which to build go source code.
+- `go-version`: The compiler version to build Go source code, default `1.26.10`, with the same patched-version validation as `go-build-test`. `GOTOOLCHAIN=local` prevents automatic switching to a different compiler.
 - `bin-path`: The bin-path relative to the project root.
 - `output`: The directory to build bin files, default `output`.
 - `command`: Command name to build.
