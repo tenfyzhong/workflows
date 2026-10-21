@@ -2,6 +2,11 @@ name: release-go
 on:
   workflow_call:
     inputs:
+      go-version:
+        description: Patched Go compiler version (not the module language version)
+        required: false
+        type: string
+        default: '1.26.10'
       bin-path:
         required: false
         type: string
@@ -42,6 +47,7 @@ jobs:
         run: echo ${{ steps.tag.outputs.version }}
   build:
     env:
+      GOTOOLCHAIN: local
       SUFFIX: ${{ matrix.goos == 'windows' && '.exe' || '' }}
       FLAGS: ${{ inputs.build-option }}
       VERSION: ${{ needs.version.outputs.version }}
@@ -64,7 +70,22 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          go-version: ${{ inputs.go-version }}
+      - name: Verify patched Go compiler
+        shell: bash
+        run: |
+          version=$(go env GOVERSION)
+          if [[ ! "$version" =~ ^go1\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Unsupported Go compiler: $version" >&2
+            exit 1
+          fi
+          minor=${BASH_REMATCH[1]}
+          patch=${BASH_REMATCH[2]}
+          if ! (( (minor == 26 && patch >= 10) || (minor == 27 && patch >= 3) )); then
+            echo "Go 1.26.10+ or 1.27.3+ is required for CVE-2026-111943" >&2
+            exit 1
+          fi
+          go version
       - name: Build target name
         id: target-name
         run: echo "target=${{inputs.command}}-${{matrix.goos}}-${{matrix.goarch}}${SUFFIX}" >> $GITHUB_OUTPUT
@@ -87,6 +108,7 @@ jobs:
       - build
     runs-on: ubuntu-latest
     env:
+      GOTOOLCHAIN: local
       VERSION: ${{ needs.version.outputs.version }}
     steps:
       - name: Checkout
@@ -95,13 +117,25 @@ jobs:
           fetch-depth: 1
       - name: Fetch tags
         run: git fetch --tags --force
-      - name: Get Go version
-        id: go-version
-        run: echo "version=$(grep -oP 'go \K[0-9.]+' go.mod)" >> $GITHUB_OUTPUT
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          go-version: ${{ inputs.go-version }}
+      - name: Verify patched Go compiler
+        shell: bash
+        run: |
+          version=$(go env GOVERSION)
+          if [[ ! "$version" =~ ^go1\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Unsupported Go compiler: $version" >&2
+            exit 1
+          fi
+          minor=${BASH_REMATCH[1]}
+          patch=${BASH_REMATCH[2]}
+          if ! (( (minor == 26 && patch >= 10) || (minor == 27 && patch >= 3) )); then
+            echo "Go 1.26.10+ or 1.27.3+ is required for CVE-2026-111943" >&2
+            exit 1
+          fi
+          go version
       - name: Download bin files
         uses: actions/download-artifact@v4
         with:

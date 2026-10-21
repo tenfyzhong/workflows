@@ -5,6 +5,11 @@ name: Go
 on:
   workflow_call:
     inputs:
+      go-version:
+        description: Patched Go compiler version (not the module language version)
+        required: false
+        type: string
+        default: '1.26.10'
       path:
         required: false
         type: string
@@ -23,6 +28,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GOTOOLCHAIN: local
     steps:
       - uses: actions/checkout@v4
       - name: debug
@@ -31,7 +38,22 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
-          go-version-file: go.mod
+          go-version: ${{ inputs.go-version }}
+      - name: Verify patched Go compiler
+        shell: bash
+        run: |
+          version=$(go env GOVERSION)
+          if [[ ! "$version" =~ ^go1\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Unsupported Go compiler: $version" >&2
+            exit 1
+          fi
+          minor=${BASH_REMATCH[1]}
+          patch=${BASH_REMATCH[2]}
+          if ! (( (minor == 26 && patch >= 10) || (minor == 27 && patch >= 3) )); then
+            echo "Go 1.26.10+ or 1.27.3+ is required for CVE-2026-111943" >&2
+            exit 1
+          fi
+          go version
       - name: Install dependencies
         run: go get .
       - name: Build path ${{ inputs.path }}
